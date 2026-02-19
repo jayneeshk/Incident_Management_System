@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Incident</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('create_incident') }}">Create</a>
+    <a href="{{ url_for('view_incidents') }}">View</a>
+</div>
+
+<div class="container">
+    <h2>Update Incident #{{ incident.incident_id }}</h2>
+
+    <form method="POST" class="form-box">
+
+        <label>Status</label>
+        <select name="status">
+            <option>Open</option>
+            <option>Investigating</option>
+            <option>Mitigated</option>
+            <option>Resolved</option>
+            <option>Closed</option>
+        </select>
+
+        <label>Severity</label>
+        <select name="severity">
+            <option>SEV 1</option>
+            <option>SEV 2</option>
+            <option>SEV 3</option>
+        </select>
+
+        <label>Description</label>
+        <textarea name="description">{{ incident.description }}</textarea>
+
+        <button type="submit" class="btn">Update Incident</button>
+    </form>
+</div>
+
+</body>
+</html>
