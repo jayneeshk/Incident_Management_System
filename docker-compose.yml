@@ -1,0 +1,24 @@
+version: '3.11'
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root@123
+      MYSQL_DATABASE: incident_db
+    ports:
+      - "3306:3306"
+  flask:
+    image: bandarurishitha/incident_app:latest
+    container_name: flask_container
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+    environment:
+      DB_USER: root
+      DB_PASSWORD: root@123
+      DB_NAME: incident_db
+      DB_HOST: mysql
