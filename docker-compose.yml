@@ -1,28 +1,29 @@
-version: '3.8'
+version: "3"
 
 services:
-  db:
-    image: mysql:8.0
-    container_name: mysql_db
+
+  mysql:
+    image: mysql:8
+    container_name: incident-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: incident_db
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: incidents_db
+      MYSQL_USER: incidentuser
+      MYSQL_PASSWORD: incidentpass
     ports:
-      - "3307:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
+      - "3306:3306"
 
-  web:
-    build: .
-    container_name: flask_app
+  app:
+    image: jayneeshk/incident-app:latest
+    container_name: incident-app
     restart: always
     ports:
-      - "5000:5000"
-    env_file:
-      - .env
+      - "80:5000"
     depends_on:
-      - db
-
-volumes:
-  mysql_data:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_USER: incidentuser
+      DB_PASSWORD: incidentpass
+      DB_NAME: incidents_db
