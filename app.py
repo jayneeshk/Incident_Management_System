@@ -45,6 +45,7 @@ def create_incident():
 def update_incident(id):
     conn = get_conn()
     cur = conn.cursor(dictionary=True)
+
     if request.method == "POST":
         status = request.form["status"]
         severity = request.form["severity"]
@@ -82,4 +83,4 @@ def delete_incident(id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

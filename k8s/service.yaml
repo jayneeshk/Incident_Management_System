@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: incident-app-service
+spec:
+  selector:
+    app: incident-app
+  ports:
+    - protocol: TCP
+      port: 5000        # Cluster port
+      targetPort: 5000  # Matches Flask container port
+  type: NodePort        # Optional: allows external access

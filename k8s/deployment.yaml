@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: incident-app
+  labels:
+    app: incident-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: incident-app
+  template:
+    metadata:
+      labels:
+        app: incident-app
+    spec:
+      containers:
+      - name: incident-app
+        image: bandarurishitha/incident_app:latest   # Docker Hub image
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 5000   # Flask listens on 5000
+        env:
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_HOST
+          - name: DB_PORT
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_PORT
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_USER
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_PASSWORD
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_NAME
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
