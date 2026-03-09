@@ -6,12 +6,9 @@ load_dotenv()
 
 def get_conn():
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password=os.getenv("db_password"),
-        database=os.getenv("db_name")
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
     )
-    if conn.is_connected():
-        print("Connected to MySQL successfully")
-        return conn
-
+    return conn
