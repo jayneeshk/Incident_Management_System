@@ -13,48 +13,97 @@
 </div>
 
 <div class="container">
-    <h2>All Incidents</h2>
+    <h2>📋 All Incidents</h2>
 
     <table>
-        <tr>
-            <th>ID</th>
-            <th>Service</th>
-            <th>Severity</th>
-            <th>Status</th>
-            <th>Description</th>
-            <th>Actions</th>
-        </tr>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Service</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th class="ai-header">AI Insights</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
 
+        <tbody>
         {% for incident in incidents %}
         <tr>
             <td>{{ incident.incident_id }}</td>
             <td>{{ incident.service_name }}</td>
-            <td>{{ incident.severity }}</td>
-            <td>{{ incident.status }}</td>
-            <td>{{ incident.description }}</td>
+
+            <!-- Severity -->
             <td>
-
-                <!-- Update Button -->
-                <a class="edit-btn" 
-                   href="{{ url_for('update_incident', id=incident.incident_id) }}">
-                   Update
-                </a>
-
-                <!-- Delete Button -->
-                <form action="{{ url_for('delete_incident', id=incident.incident_id) }}" 
-                      method="POST" 
-                      style="display:inline;"
-                      onsubmit="return confirm('Are you sure you want to delete this incident?');">
-
-                    <button type="submit" class="delete-btn">
-                        Delete
-                    </button>
-
-                </form>
-
+                <span class="badge 
+                    {% if incident.severity == 'SEV 1' %}sev1
+                    {% elif incident.severity == 'SEV 2' %}sev2
+                    {% else %}sev3
+                    {% endif %}">
+                    {{ incident.severity }}
+                </span>
             </td>
+
+            <!-- Status -->
+            <td class="
+                {% if incident.status == 'Open' %}status-open
+                {% elif incident.status == 'Resolved' %}status-resolved
+                {% else %}status-progress
+                {% endif %}
+            ">
+                {{ incident.status }}
+            </td>
+
+            <!-- Description -->
+            <td class="desc-cell">
+                {{ incident.description }}
+            </td>
+
+            <!-- AI INSIGHTS -->
+            <td class="ai-cell">
+                {% if incident.ai_insights %}
+                    <div class="ai-box">
+                        {% for line in incident.ai_insights.split('\n') %}
+                            {% if line.strip() %}
+                                <div class="ai-line">
+                                    {% if 'summary' in line.lower() %}
+                                        <span class="tag summary">Summary</span> {{ line }}
+                                    {% elif 'root' in line.lower() %}
+                                        <span class="tag root">Root Cause</span> {{ line }}
+                                    {% elif 'fix' in line.lower() %}
+                                        <span class="tag fix">Fix</span> {{ line }}
+                                    {% else %}
+                                        • {{ line }}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <span class="no-ai">No insights</span>
+                {% endif %}
+            </td>
+
+            <!-- ACTION BUTTONS -->
+            <td>
+                <div class="actions">
+                    <a class="edit-btn"
+                       href="{{ url_for('update_incident', id=incident.incident_id) }}">
+                       Update
+                    </a>
+
+                    <form action="{{ url_for('delete_incident', id=incident.incident_id) }}"
+                          method="POST"
+                          onsubmit="return confirm('Delete this incident?');">
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </div>
+            </td>
+
         </tr>
         {% endfor %}
+        </tbody>
     </table>
 
 </div>

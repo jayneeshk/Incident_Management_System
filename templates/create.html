@@ -12,25 +12,27 @@
     <a href="{{ url_for('view_incidents') }}">View</a>
 </div>
 
-<div class="container">
-    <h2>Create New Incident</h2>
+<div class="container center">
+    <div class="form-box">
+        <h2>Create New Incident</h2>
 
-    <form method="POST" class="form-box">
-        <label>Service Name</label>
-        <input type="text" name="service_name" required>
+        <form method="POST">
+            <label>Service Name</label>
+            <input type="text" name="service_name" required>
 
-        <label>Severity</label>
-        <select name="severity">
-            <option>SEV 1</option>
-            <option>SEV 2</option>
-            <option>SEV 3</option>
-        </select>
+            <label>Severity</label>
+            <select name="severity">
+                <option>SEV 1</option>
+                <option>SEV 2</option>
+                <option>SEV 3</option>
+            </select>
 
-        <label>Description</label>
-        <textarea name="description" required></textarea>
+            <label>Description</label>
+            <textarea name="description" required></textarea>
 
-        <button type="submit" class="btn">Create Incident</button>
-    </form>
+            <button type="submit" class="btn">Create Incident</button>
+        </form>
+    </div>
 </div>
 
 </body>
